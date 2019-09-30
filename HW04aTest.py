@@ -3,13 +3,17 @@
 
 from HW04aKolasinski import reposcommits
 
+
 import unittest
+from unittest import mock
 
 class testreposcommits(unittest.TestCase):
-    def testrepcommit(self):
+    @mock.patch('requests.get')
+    def testrepcommit(self, mockapi):
+        mockapi.return_value.json.return_value = ([{"github":1,"name":"Repo_A"},{"github":2,"name":"Repo_B"}])
         self.assertEqual(2, len(reposcommits("jkolasinski")))
-        self.assertEqual(2, reposcommits("jkolasinski").get("SSW-567-HW01"))
-        self.assertEqual(7, reposcommits("jkolasinski").get("SSW-567-HW02"))
+        self.assertEqual(2, reposcommits("jkolasinski").get("Repo_A"))
+        self.assertEqual(2, reposcommits("jkolasinski").get("Repo_B"))
         
 
         
